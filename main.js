@@ -38,7 +38,7 @@ if (channels.length) {
   client.on("message", (_channel, user, message, self) => {
     if (self) return;
 
-    if (!message.startsWith("!") && !message.startsWith("@")) return;
+    if (message.startsWith("!") || message.startsWith("@")) return;
     if (["nightbot", "streamelements", "streamlabs"].includes(user.username))
       return;
     if (user["emote-only"]) return;
