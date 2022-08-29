@@ -1,0 +1,60 @@
+@font-face {
+    font-family: ProjectPaintball;
+    src: url("PROJECT_PAINTBALL.OTF") format("opentype");
+}
+
+body {
+    overflow: hidden;
+    font-family: 'ProjectPaintball';
+    margin: 0;
+}
+#shoots {
+    width: 100vw;
+    height: 100vh;
+    overflow: hidden;
+    margin: 0;
+    padding: 0;
+}
+.vanish {
+    opacity: 0 !important;
+}
+.squid {
+    width: 10%;
+    height: 19%;
+    opacity: 0.45;
+    position: absolute;
+    transition: transform 0.1s ease, opacity 4s ease;
+}
+.name {
+    width: 100%;
+    text-align: center;
+    display: block;
+    font-size: 1.2rem;
+    color: white;
+    text-shadow: 3px -2px 3px black;
+}
+.hide {
+    display: none;
+}
+
+.message {
+    border: 1px solid black;
+    border-radius: 10px;
+    padding: 10px;
+    background-color: white;
+    color: black;
+    font-size: 1.6rem;
+    position: absolute;
+    top: -5rem;
+    width: 200%;
+    transform: translateX(-25%);
+    text-shadow: none;
+    z-index: 1
+}
+.first .message {
+    font-weight: bold;
+    font-size: 2rem;
+    color: white;
+    background-color: black;
+    border: 2px solid white;
+}
