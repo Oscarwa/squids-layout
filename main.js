@@ -38,16 +38,14 @@ if (channels.length) {
   client.on("message", (_channel, user, message, self) => {
     if (self) return;
 
-    if (!message.startsWith("!") && !message.startsWith('@')) {
-      const username = user["display-name"];
-      const userColor = user.color;
-      if(['nightbot', 'streamelements'].includes(username)) {
-        return;
-      }
-          
-      commandMessage(username, userColor, message);
-          
-    }
+    if (!message.startsWith("!") && !message.startsWith("@")) return;
+    if (["nightbot", "streamelements", "streamlabs"].includes(user.username))
+      return;
+    if (user["emote-only"]) return;
+
+    const username = user["display-name"];
+    const userColor = user.color;
+    commandMessage(username, userColor, message);
   });
 }
 
@@ -119,7 +117,7 @@ const commandMessage = (username, color, message) => {
     squids.find((u) => u.username === username) ||
     createSquid(username, color);
   squid.timestamp = Date.now() + SQUID_DEFAULT_DURATION * 60 * 1000;
-  squid.element.classList.remove('vanish');
+  squid.element.classList.remove("vanish");
   const el = squid.element;
   const messageEl = document.createElement("span");
   messageEl.classList.add("name", "message");
@@ -177,7 +175,10 @@ showSquids = () => {
   const currentTimestamp = Date.now();
   for (const squidId in squids) {
     const squid = squids[squidId];
-    if (currentTimestamp > squid.timestamp - 4_000 && currentTimestamp < squid.timestamp) {
+    if (
+      currentTimestamp > squid.timestamp - 4_000 &&
+      currentTimestamp < squid.timestamp
+    ) {
       squid.element.classList.add("vanish");
     } else if (currentTimestamp > squid.timestamp) {
       squid.element.remove();
