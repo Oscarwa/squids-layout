@@ -31,24 +31,22 @@ if (channels.length) {
   client = new tmi.client(config);
   client.connect();
 
-  client.on("raw_message", (messageCloned, message) => {
+  client.on("raw_message", (_messageCloned, message) => {
     console.log(message.raw);
   });
 
-  client.on("message", (channel, user, message, self) => {
+  client.on("message", (_channel, user, message, self) => {
     if (self) return;
 
-    if (!message.startsWith("!")) {
-      // destructuring the message to get the command and three different parameters in separated variables
-      const [command] = message.split(" ").filter((i) => i !== "");
+    if (!message.startsWith("!") && !message.startsWith('@')) {
       const username = user["display-name"];
       const userColor = user.color;
-      switch (command.toLowerCase()) {
-        case `!squid`:
-          console.log(userColor);
-          commandSquid(username, userColor, Math.random() <= 0.02);
-          break;
+      if(['nightbot', 'streamelements'].includes(username)) {
+        return;
       }
+          
+      commandMessage(username, userColor, message);
+          
     }
   });
 }
