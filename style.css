@@ -18,12 +18,21 @@ body {
 .vanish {
     opacity: 0 !important;
 }
+.splatted {
+    display: none;
+}
+.vanish .splatted {
+    display: block;
+}
+.vanish .squid-vector {
+    display: none;
+}
 .squid {
-    width: 10%;
-    height: 19%;
-    opacity: 0.45;
+    width: 8%;
+    height: 9%;
+    opacity: 0.65;
     position: absolute;
-    transition: transform 0.1s ease, opacity 4s ease;
+    transition: transform 0.1s ease, opacity 1.5s ease;
 }
 .name {
     width: 100%;
@@ -37,24 +46,56 @@ body {
     display: none;
 }
 
+
+
+.message-wrapper {
+    width: 200%;
+    position: absolute;
+    top: -3.5rem;
+    transform: translateX(-25%);
+    z-index: 1;
+    display: flex;
+    justify-content: center;
+}
+.message-wrapper.md {
+    top: -4.5rem;
+}
+.message-wrapper.lg {
+    top: -6em;
+}
+.message-wrapper.xl {
+    top: -7.5em;
+}
 .message {
     border: 1px solid black;
     border-radius: 10px;
-    padding: 10px;
+    padding: 0.4rem 0.7rem;
     background-color: white;
     color: black;
     font-size: 1.6rem;
-    position: absolute;
-    top: -5rem;
-    width: 200%;
-    transform: translateX(-25%);
     text-shadow: none;
-    z-index: 1
+    max-width: 100%;
+    font-size: 1.5rem;
 }
 .first .message {
     font-weight: bold;
-    font-size: 2rem;
     color: white;
     background-color: black;
     border: 2px solid white;
+}
+.xs .message {
+    width: 60px;
+    font-size: 2.2rem;
+}
+.sm .message {
+    width: 95px;
+    font-size: 1.8rem;
+}
+.md .message {
+    width: 140px;
+    font-size: 1.5rem;
+}
+.lg .message, .xl .message {
+    width: 100%;
+    font-size: 1.4rem;
 }
