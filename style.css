@@ -32,7 +32,7 @@ body {
     height: 9%;
     opacity: 0.65;
     position: absolute;
-    transition: transform 0.1s ease, opacity 1.5s ease;
+    transition: transform 0.1s ease, opacity 3s ease;
 }
 .name {
     width: 100%;

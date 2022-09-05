@@ -70,9 +70,9 @@ conversion = (ms) => {
 let acceleration = 3;
 const squids = [];
 const users = [];
-const SQUID_DEFAULT_DURATION = 0.2; // minutes
-const ACCELERATION = 2;
-const MESSAGE_DURATION = 3; // seconds
+const SQUID_DEFAULT_DURATION = 45; // seconds
+const ACCELERATION = 4;
+const MESSAGE_DURATION = 8; // seconds
 const TextSize = {
   XS: "xs",
   SM: "sm",
@@ -222,7 +222,7 @@ const commandMessage = (username, color, message) => {
     squid ||
     squids.find((u) => u.username === username) ||
     createSquid(username, color);
-  squid.timestamp = Date.now() + SQUID_DEFAULT_DURATION * 60 * 1000;
+  squid.timestamp = Date.now() + SQUID_DEFAULT_DURATION * 1000;
   squid.element.classList.remove("vanish");
   const el = squid.element;
   const mWrapper = document.createElement("div");
