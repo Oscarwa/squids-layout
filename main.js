@@ -69,6 +69,79 @@ conversion = (ms) => {
 
 let acceleration = 3;
 const squids = [];
+const users = [];
+const SQUID_DEFAULT_DURATION = 0.2; // minutes
+const ACCELERATION = 2;
+const MESSAGE_DURATION = 3; // seconds
+const TextSize = {
+  XS: "xs",
+  SM: "sm",
+  MD: "md",
+  LG: "lg",
+  XL: "xl",
+};
+
+const soundsPath = "./sounds";
+const directHitSound = new Howl({
+  src: [`${soundsPath}/ShotExplosionDirect00.wav`],
+});
+const helloSoundBoy = [
+  new Howl({ src: [`${soundsPath}/VoiceMDefeat00.wav`] }),
+  new Howl({ src: [`${soundsPath}/VoiceMDefeat01.wav`] }),
+  new Howl({ src: [`${soundsPath}/VoiceMDefeat02.wav`] }),
+  new Howl({ src: [`${soundsPath}/VoiceMDefeat03.wav`] }),
+  new Howl({ src: [`${soundsPath}/VoiceMDefeat04.wav`] }),
+  new Howl({ src: [`${soundsPath}/VoiceMDefeat05.wav`] }),
+  new Howl({ src: [`${soundsPath}/VoiceMDefeat06.wav`] }),
+  new Howl({ src: [`${soundsPath}/VoiceMDefeat07.wav`] }),
+  new Howl({ src: [`${soundsPath}/VoiceMDefeat09.wav`] }),  
+  new Howl({ src: [`${soundsPath}/VoiceMDefeat10.wav`] }),
+  new Howl({ src: [`${soundsPath}/VoiceMDefeat11.wav`] }),
+  new Howl({ src: [`${soundsPath}/VoiceMDefeat12.wav`] }),
+  new Howl({ src: [`${soundsPath}/VoiceMJet100.wav`] }),
+  new Howl({ src: [`${soundsPath}/VoiceMJet101.wav`] }),
+  new Howl({ src: [`${soundsPath}/VoiceMJet102.wav`] }),
+  new Howl({ src: [`${soundsPath}/VoiceMJet103.wav`] }),
+  new Howl({ src: [`${soundsPath}/VoiceMNice100cmp.wav`] }),
+  new Howl({ src: [`${soundsPath}/VoiceMNice101cmp.wav`] }),
+];
+const helloSoundGirl = [
+  new Howl({ src: [`${soundsPath}/VoiceFDefeat00.wav`] }),
+  new Howl({ src: [`${soundsPath}/VoiceFDefeat01.wav`] }),
+  new Howl({ src: [`${soundsPath}/VoiceFDefeat02.wav`] }),
+  new Howl({ src: [`${soundsPath}/VoiceFDefeat03.wav`] }),
+  new Howl({ src: [`${soundsPath}/VoiceFDefeat04.wav`] }),
+  new Howl({ src: [`${soundsPath}/VoiceFDefeat05.wav`] }),
+  new Howl({ src: [`${soundsPath}/VoiceFDefeat06.wav`] }),
+  new Howl({ src: [`${soundsPath}/VoiceFDefeat07.wav`] }),
+  new Howl({ src: [`${soundsPath}/VoiceFDefeat08.wav`] }),
+  new Howl({ src: [`${soundsPath}/VoiceFDefeat09.wav`] }),
+  new Howl({ src: [`${soundsPath}/VoiceFDefeat10.wav`] }),
+  new Howl({ src: [`${soundsPath}/VoiceFDefeat101.wav`] }),
+  new Howl({ src: [`${soundsPath}/VoiceFDefeat102.wav`] }),
+  new Howl({ src: [`${soundsPath}/VoiceFDefeat103.wav`] }),
+  new Howl({ src: [`${soundsPath}/VoiceFDefeat104.wav`] }),
+  new Howl({ src: [`${soundsPath}/VoiceFDefeat105.wav`] }),
+  new Howl({ src: [`${soundsPath}/VoiceFJet00.wav`] }),
+  new Howl({ src: [`${soundsPath}/VoiceFJet01.wav`] }),
+  new Howl({ src: [`${soundsPath}/VoiceFJet02.wav`] }),
+  new Howl({ src: [`${soundsPath}/VoiceFJet03.wav`] }),
+  new Howl({ src: [`${soundsPath}/VoiceFNice100cmp.wav`] }),
+  new Howl({ src: [`${soundsPath}/VoiceFNice101cmp.wav`] }),
+];
+const playSoundHit = () => {
+  const vol = 0.05;
+  directHitSound.volume(vol);
+  directHitSound.play();
+};
+const playSoundHello = () => {
+  const vol = 0.4;
+  const boy = Math.random() > 0.5;
+  const rnd = Math.floor(Math.random() * (boy ? helloSoundBoy.length : helloSoundGirl.length));
+  boy ? helloSoundBoy[rnd].volume(vol) : helloSoundGirl[rnd].volume(vol);
+  boy ? helloSoundBoy[rnd].play() : helloSoundGirl[rnd].play();
+};
+
 
 const createSplattedVector = (color) => {
   const splattedVector = document.createElementNS(
@@ -113,15 +186,6 @@ const createSquidVector = (color) => {
   return squidVector;
 };
 
-const users = [];
-const MESSAGE_DURATION_MS = 8000;
-const TextSize = {
-  XS: "xs",
-  SM: "sm",
-  MD: "md",
-  LG: "lg",
-  XL: "xl",
-};
 const commandMessage = (username, color, message) => {
   let textSize = "";
   switch (true) {
@@ -149,9 +213,10 @@ const commandMessage = (username, color, message) => {
     users.push(user);
     squid = createSquid(username, color);
     squid.element.classList.add("first");
+    playSoundHello()
     setTimeout(() => {
       squid.element.classList.remove("first");
-    }, MESSAGE_DURATION_MS + 1000);
+    }, (MESSAGE_DURATION + 1) * 1000);
   }
   squid =
     squid ||
@@ -169,10 +234,8 @@ const commandMessage = (username, color, message) => {
   el.append(mWrapper);
   setTimeout(() => {
     messageEl.remove();
-  }, MESSAGE_DURATION_MS);
+  }, MESSAGE_DURATION * 1000);
 };
-const SQUID_DEFAULT_DURATION = 0.1; // minutes
-const ACCELERATION = 2;
 
 const createSquid = (username, color) => {
   if (squids.length < maxSquids) {
@@ -207,6 +270,7 @@ const createSquid = (username, color) => {
       vx: acceleration * Math.cos(radAngle),
       vy: acceleration * Math.sin(radAngle),
       angle: radAngle,
+      splatted: false,
       username,
       element: squidElement,
       timestamp: null,
@@ -226,7 +290,11 @@ showSquids = () => {
       currentTimestamp > squid.timestamp - 4_000 &&
       currentTimestamp < squid.timestamp
     ) {
-      squid.element.classList.add("vanish");
+      if (!squid.splatted) {
+        squid.element.classList.add("vanish");
+        playSoundHit();
+      }
+      squids[squidId].splatted = true;
       continue;
     } else if (currentTimestamp > squid.timestamp) {
       squid.element.remove();
